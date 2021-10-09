@@ -1,0 +1,12 @@
+@import '../../palette';
+
+.task-board-wrapper {
+  height: 100%;
+  padding: 20px;
+  background-color: $blue-3;
+}
+
+.columns-wrapper {
+  display: flex;
+  height: 100%;
+}

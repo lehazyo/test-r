@@ -1,0 +1,63 @@
+@import '../../palette';
+
+.column-wrapper {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  max-width: 300px;
+  background: $white-5;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 2px solid;
+  &:not(:first-child) {
+    margin-left: 20px;
+  }
+}
+
+.column-header {
+  padding: 8px 16px;
+  background-color: $white;
+  border-bottom: 2px solid;
+}
+
+.column-tasks-wrapper {
+  position: relative;
+  flex-grow: 1;
+  padding: 10px;
+  overflow: auto;
+  &::before {
+    content: "";
+    position: absolute;
+    display: none;
+    top: 50%;
+    left: 50%;
+    width: 60px;
+    height: 60px;
+    margin: -31px 0 0 -31px;
+    border-top: 4px solid $blue-3;
+    border-radius: 50%;
+    animation: loadingRotation infinite linear .5s;
+  }
+}
+
+.column-wrapper-loading {
+  .column-tasks-wrapper::before {
+    display: block;
+  }
+  .task-wrapper {
+    display: none;
+  }
+  .tasks-empty {
+    display: none;
+  }
+}
+
+.tasks-empty {
+  font-size: 16px;
+  text-align: center;
+}
+
+@keyframes loadingRotation {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(359deg); }
+}

@@ -1,0 +1,39 @@
+@import '../../palette';
+
+.task-wrapper {
+  background-color: $gray-1;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 10px;
+  &.priority-MUST {
+    background-color: $red-1;
+    .task-header {
+      background-color: $red-2;
+    }
+  }
+  &.priority-SHOULD {
+    background-color: $yellow-1;
+    .task-header {
+      background-color: $yellow-2;
+    }
+  }
+  &.priority-COULD {
+    background-color: $green-1;
+    .task-header {
+      background-color: $green-2;
+    }
+  }
+}
+
+.task-header {
+  background-color: $gray-2;
+  padding: 4px 8px;
+  cursor: grab;
+  box-shadow: 0 2px 5px $black-3;
+}
+
+.task-body {
+  padding: 4px 8px;
+  word-break: break-word;
+  word-wrap: break-word;
+}
