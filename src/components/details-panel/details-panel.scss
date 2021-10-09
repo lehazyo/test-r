@@ -1,11 +1,9 @@
-.details-panel-wrapper {
-  display: none;
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  left: 0;
-}
+@import '../../palette';
 
-.details-panel-wrapper--open {
-  display: block;
+.details-panel-wrapper {
+  min-height: 200px;
+  background-color: $white;
+  border-top: 1px solid $gray-6;
+  box-shadow: 0 0 20px $black-3;
+  font-size: 20px;
 }

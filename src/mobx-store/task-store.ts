@@ -1,4 +1,4 @@
-import { action, observable } from 'mobx';
+import { action, computed, observable } from 'mobx';
 import { Task, TaskStatus } from '../types/task';
 import { taskPriorityArray } from '../utils/task-priority';
 import jsonTasks from '../mocks/tasks.json';
@@ -37,7 +37,7 @@ export class TaskStore {
   };
 
   @action
-  loadTasks() {
+  loadTasks(): void {
     this.privates.tasksLoading = true;
 
     const localTasks = this.parseLocalStorageTasks();
@@ -55,15 +55,18 @@ export class TaskStore {
   }
 
   @action
-  setSelectedId(id: number | null) {
+  setSelectedId(id: number | null): void {
+    console.log('id was set');
     this.privates.selectedId = id;
   }
 
+  @computed
   getSelectedId(): number | null {
     return this.privates.selectedId;
   }
 
-  isIdSelected(id: number) {
+  @computed
+  isIdSelected(id: number): boolean {
     return (id === this.getSelectedId());
   }
 
@@ -101,5 +104,11 @@ export class TaskStore {
 
   isTasksLoading(): boolean {
     return this.privates.tasksLoading;
+  }
+
+  getSelectedTask(): Task | null {
+    return this.privates.allTasks.find((task) => {
+      return task.id === this.privates.selectedId;
+    }) ?? null;
   }
 }
