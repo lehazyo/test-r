@@ -10,7 +10,7 @@
   },
   {
     "id": 1023,
-    "title": "Fix auto popup animation",
+    "title": "Fix popup hiding animation",
     "firstName": "Petr",
     "lastName": "Mamontov",
     "status": "IN_PROGRESS",
@@ -61,5 +61,86 @@
     "status": "PLAN",
     "priority": "SHOULD",
     "date": "2021-09-04"
+  },
+  {
+    "id": 129,
+    "title": "Add preloader animation",
+    "firstName": "Petr",
+    "lastName": "Mamontov",
+    "status": "PLAN",
+    "priority": "COULD",
+    "date": "2021-09-05"
+  },
+  {
+    "id": 132,
+    "title": "Design Computation section",
+    "firstName": "Petr",
+    "lastName": "Mamontov",
+    "status": "DONE",
+    "priority": "MUST",
+    "date": "2021-08-05"
+  },
+  {
+    "id": 134,
+    "title": "Create Pen icon",
+    "firstName": "Vasiliy",
+    "lastName": "Rebrov",
+    "status": "PLAN",
+    "priority": "MUST",
+    "date": "2021-08-20"
+  },
+  {
+    "id": 136,
+    "title": "Create Cancel icon",
+    "firstName": "Vasiliy",
+    "lastName": "Rebrov",
+    "status": "PLAN",
+    "priority": "MUST",
+    "date": "2021-08-20"
+  },
+  {
+    "id": 137,
+    "title": "Create Reload icon",
+    "firstName": "Vasiliy",
+    "lastName": "Rebrov",
+    "status": "PLAN",
+    "priority": "MUST",
+    "date": "2021-08-20"
+  },
+  {
+    "id": 138,
+    "title": "Create Trash icon",
+    "firstName": "Vasiliy",
+    "lastName": "Rebrov",
+    "status": "PLAN",
+    "priority": "MUST",
+    "date": "2021-08-20"
+  },
+  {
+    "id": 139,
+    "title": "Create Eye icon",
+    "firstName": "Vasiliy",
+    "lastName": "Rebrov",
+    "status": "IN_PROGRESS",
+    "priority": "MUST",
+    "date": "2021-08-20"
+  },
+  {
+    "id": 135,
+    "title": "Discuss Icon management tool design",
+    "firstName": "Vasiliy",
+    "lastName": "Rebrov",
+    "status": "PLAN",
+    "priority": "COULD",
+    "date": "2021-08-19"
+  },
+  {
+    "id": 141,
+    "title": "Create Text Bubble icon",
+    "firstName": "Vasiliy",
+    "lastName": "Rebrov",
+    "status": "DONE",
+    "priority": "MUST",
+    "date": "2021-08-19"
   }
 ]
