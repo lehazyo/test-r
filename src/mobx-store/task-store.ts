@@ -1,61 +1,105 @@
-import { action, observable, runInAction } from 'mobx';
+import { action, observable } from 'mobx';
 import { Task, TaskStatus } from '../types/task';
-import { TaskPriority } from '../types/task';
+import { taskPriorityArray } from '../utils/task-priority';
 import jsonTasks from '../mocks/tasks.json';
 
 export interface TaskStoreParams {
-  tasksLoaded: boolean;
-  tasksByStatus: Map<TaskStatus, Task[]>;
   allTasks: Task[];
-};
+  tasksLoading: boolean;
+  selectedId: number | null;
+  tasksByStatus: Map<TaskStatus, Task[]>;
+}
 
-export const defaultTaskStoreData: TaskStoreParams = {
-  tasksLoaded: false,
-  tasksByStatus: new Map(),
-  allTasks: [],
-};
+export class TaskStore {
+  private privates = observable({
+    allTasks: [],
+    tasksLoading: false,
+    selectedId: null,
+    tasksByStatus: new Map(),
+  } as TaskStoreParams);
 
-export const taskStoreData = observable({...defaultTaskStoreData});
-
-const parseLocalStorageTasks = (): Task[] | false => {
-  if (localStorage === undefined) {
-    return false;
+  constructor() {
+    this.loadTasks();
   }
-  const tasksJson = localStorage.getItem("tasks");
-  if (tasksJson === null) {
-    return false;
-  }
-  const parsedTasks = JSON.parse(tasksJson);
-  return parsedTasks.map((task: any) => {
-    return task as Task;
-  });
-};
 
-const loadTasks = action(() => {
-  const localTasks = parseLocalStorageTasks();
-
-  taskStoreData.allTasks = (!localTasks)
-    ? jsonTasks.map((task: any) => {
+  parseLocalStorageTasks(): Task[] | false {
+    if (localStorage === undefined) {
+      return false;
+    }
+    const tasksJson = localStorage.getItem("tasks");
+    if (tasksJson === null) {
+      return false;
+    }
+    const parsedTasks = JSON.parse(tasksJson);
+    return parsedTasks.map((task: any) => {
       return task as Task;
-    })
-    : localTasks;
-
-  // imitation of http request time gap
-  setTimeout(() => {
-    runInAction(() => {
-      taskStoreData.tasksLoaded = true;
     });
-  }, 500 + Math.random() * 2000);
-});
+  };
 
-export const getTasksByStatus = action((status: TaskStatus): Task[] => {
-  if (taskStoreData.tasksByStatus.get(status) === undefined) {
-    taskStoreData.tasksByStatus.set(status, taskStoreData.allTasks.filter((task) => {
-      return task.status === status;
-    }));
+  @action
+  loadTasks() {
+    this.privates.tasksLoading = true;
+
+    const localTasks = this.parseLocalStorageTasks();
+  
+    this.privates.allTasks = (!localTasks)
+      ? jsonTasks.map((task: any) => {
+        return task as Task;
+      })
+      : localTasks;
+  
+    // imitation of http request time gap
+    setTimeout(() => {
+      this.privates.tasksLoading = false;
+    }, 500 + Math.random() * 2000);
   }
-  const returnResult = taskStoreData.tasksByStatus.get(status);
-  return returnResult ?? [];
-});
 
-loadTasks();
+  @action
+  setSelectedId(id: number | null) {
+    this.privates.selectedId = id;
+  }
+
+  getSelectedId(): number | null {
+    return this.privates.selectedId;
+  }
+
+  isIdSelected(id: number) {
+    return (id === this.getSelectedId());
+  }
+
+  @action
+  getTasksByStatus(status: TaskStatus): Task[] {
+    if (this.privates.tasksByStatus.get(status) === undefined) {
+      const tasksByStatus = this.privates.allTasks.filter((task) => task.status === status);  
+      tasksByStatus.sort((a, b) => {
+        const aFullName = `${a.lastName} ${a.firstName}`;
+        const bFullName = `${b.lastName} ${b.firstName}`;
+  
+        // first sort by Last name
+        if (aFullName > bFullName) {
+          return 1;
+        }
+  
+        if (aFullName < bFullName) {
+          return -1;
+        }
+  
+        // if Last names are equal, sort by priority
+        const aPriority = taskPriorityArray.indexOf(a.priority);
+        const bPriority = taskPriorityArray.indexOf(b.priority);
+        if (aPriority > bPriority) {
+          return 1;
+        }
+  
+        return (aPriority < bPriority) ? -1 : 0;
+      });
+      this.privates.tasksByStatus.set(status, tasksByStatus);
+    }
+    const returnResult = this.privates.tasksByStatus.get(status);
+    return returnResult ?? [];
+  }
+
+  isTasksLoading(): boolean {
+    return this.privates.tasksLoading;
+  }
+}
