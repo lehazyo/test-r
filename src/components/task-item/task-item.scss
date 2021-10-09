@@ -4,7 +4,10 @@
   background-color: $gray-1;
   border-radius: 10px;
   overflow: hidden;
-  margin-bottom: 10px;
+  margin-top: 10px;
+  &:first-child {
+    margin-top: 0;
+  }
   &.priority-MUST {
     background-color: $red-1;
     .task-header {
@@ -23,6 +26,10 @@
       background-color: $green-2;
     }
   }
+}
+
+.task-wrapper--selected {
+  box-shadow: 0 0 0 2px $black;
 }
 
 .task-header {

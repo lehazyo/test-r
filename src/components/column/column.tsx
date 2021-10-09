@@ -1,33 +1,28 @@
-import React, { FC } from 'react';
+import React, { FC, useContext } from 'react';
 import { TaskStatus } from '../../types/task';
-import { TaskItem } from '../task/task';
-import { taskStoreData, getTasksByStatus } from '../../mobx-store/task-store';
+import { TaskItem } from '../task-item/task-item';
+import { mapTaskStatusToLabel } from '../../utils/task-status-name';
 import './column.scss';
 import { nanoid } from 'nanoid';
 import { observer } from 'mobx-react';
+import { TaskContext } from '../task-board/task-board';
+import { TaskStore } from '../../mobx-store/task-store';
 
 export interface ColumnProps {
   status: TaskStatus;
 }
 
 export const Column: FC<ColumnProps> = observer(({ status }) => {
-  const tasks = getTasksByStatus(status);
+  const taskStore: TaskStore = useContext(TaskContext);
 
-  const statusLowerCase = status.toLowerCase();
-  const statusNormalCase = status.substring(0, 1) + statusLowerCase.substring(1);
-
-  const tasksList = tasks.map((task) => <TaskItem key={nanoid()} {...task} />);
-
-  const columnCssClasses = ['column-wrapper'];
-
-  if (!taskStoreData.tasksLoaded) {
-    columnCssClasses.push('column-wrapper-loading');
-  }
+  const taskListContent = (taskStore.isTasksLoading())
+    ? <div className="column-preloader" />
+    : taskStore.getTasksByStatus(status).map((task) => <TaskItem key={nanoid()} {...task} />);
   
   return (
-    <div className={columnCssClasses.join(' ')}>
-      <header className="column-header">{statusNormalCase}</header>
-      <div className="column-tasks-wrapper">{tasksList}</div>
+    <div className="column-wrapper">
+      <header className="column-header">{mapTaskStatusToLabel(status)}</header>
+      <div className="column-tasks-wrapper">{taskListContent}</div>
     </div>
   )
 });
