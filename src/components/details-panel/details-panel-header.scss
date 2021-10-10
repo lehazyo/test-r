@@ -5,12 +5,21 @@
   align-items: center;
   padding: 8px;
   background-color: $gray-1;
+  &.priority-MUST {
+    background-color: $red-3;
+  }
+  &.priority-SHOULD {
+    background-color: $yellow-3;
+  }
+  &.priority-COULD {
+    background-color: $green-3;
+  }
 }
 
 .details-panel-id {
   padding: 2px 4px;
   margin-right: 8px;
-  border: 1px solid $gray-3;
+  border: 1px solid $gray-6;
   border-radius: 4px;
   background-color: $gray-2;
   font-size: 16px;

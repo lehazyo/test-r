@@ -3,6 +3,7 @@ import { observer } from 'mobx-react';
 import { TaskContext } from '../task-board/task-board';
 import { DetailsPanelHeader } from './details-panel-header';
 import './details-panel.scss';
+import { mapTaskStatusToLabel } from '../../utils/task-status-name';
 
 export const DetailsPanel = observer(() => {
   const taskStore = useContext(TaskContext);
@@ -17,7 +18,15 @@ export const DetailsPanel = observer(() => {
     <div className="details-panel-wrapper">
       <DetailsPanelHeader selectedTask={selectedTask} />
       <div className="details-panel-body">
-        I am a details panel
+        <div className="details-panel-assignee">
+          Assignee: {selectedTask.lastName}, {selectedTask.firstName}
+        </div>
+        <div className="details-panel-assignee">
+          Date created: {selectedTask.date}
+        </div>
+        <div className="details-panel-status">
+          Status: {mapTaskStatusToLabel(selectedTask.status)}
+        </div>
       </div>
     </div>
   );

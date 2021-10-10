@@ -11,21 +11,17 @@ export interface DetailsPanelHeaderProps {
 export const DetailsPanelHeader: FC<DetailsPanelHeaderProps> = observer(({ selectedTask }) => {
   const taskStore = useContext(TaskContext);
 
-  console.log(1);
   const closerRef = useRef<HTMLButtonElement>(null);
   useEffect(() => {
-    console.log(2);
     if (closerRef.current !== null) {
-      console.log(3);
       closerRef.current.addEventListener("click", () => {
-        console.log(4);
         taskStore.setSelectedId(null);
       });
     }
   }, []);
 
   return (
-    <header className="details-panel-header">
+    <header className={`details-panel-header priority-${selectedTask.priority}`}>
       <span className="details-panel-id">TSK-{selectedTask.id}</span>
       <span className="details-panel-title">{selectedTask.title}</span>
 
