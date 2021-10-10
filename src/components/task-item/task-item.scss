@@ -1,14 +1,17 @@
 @import '../../palette';
 
-.task-wrapper {
-  background-color: $gray-1;
-  border-radius: 10px;
-  overflow: hidden;
+.task-wrapper-dragger {
   margin-top: 10px;
   cursor: pointer;
   &:first-child {
     margin-top: 0;
   }
+}
+
+.task-wrapper {
+  background-color: $gray-1;
+  border-radius: 10px;
+  overflow: hidden;
   &.priority-MUST {
     background-color: $red-1;
     .task-header {
@@ -29,6 +32,25 @@
   }
 }
 
+.task-wrapper--dragged {
+  position: relative;
+  background-color: transparent;
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    border: 3px dashed $white;
+    border-radius: 10px;
+  }
+  .task-header,
+  .task-body {
+    opacity: 0.05;
+  }
+}
+
 .task-wrapper--selected {
   box-shadow: 0 0 0 2px $black;
 }
@@ -36,7 +58,6 @@
 .task-header {
   background-color: $gray-2;
   padding: 4px 8px;
-  cursor: grab;
   box-shadow: 0 2px 5px $black-3;
 }
 

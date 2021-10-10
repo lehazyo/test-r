@@ -17,6 +17,7 @@
 }
 
 .details-panel-id {
+  flex-shrink: 0;
   padding: 2px 4px;
   margin-right: 8px;
   border: 1px solid $gray-6;
@@ -26,10 +27,13 @@
 }
 
 .details-panel-title {
-
+  margin-right: 16px;
+  word-break: break-word;
+  word-wrap: break-word;
 }
 
 .details-panel-closer {
+  flex-shrink: 0;
   width: 30px;
   height: 30px;
   padding: 0;

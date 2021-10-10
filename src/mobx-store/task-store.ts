@@ -56,7 +56,6 @@ export class TaskStore {
 
   @action
   setSelectedId(id: number | null): void {
-    console.log('id was set');
     this.privates.selectedId = id;
   }
 
@@ -70,32 +69,36 @@ export class TaskStore {
     return (id === this.getSelectedId());
   }
 
+  sortTasks(arrayToSort: Task[]) {
+    arrayToSort.sort((a, b) => {
+      const aFullName = `${a.lastName} ${a.firstName}`;
+      const bFullName = `${b.lastName} ${b.firstName}`;
+
+      // first sort by Last name
+      if (aFullName > bFullName) {
+        return 1;
+      }
+
+      if (aFullName < bFullName) {
+        return -1;
+      }
+
+      // if Last names are equal, sort by priority
+      const aPriority = taskPriorityArray.indexOf(a.priority);
+      const bPriority = taskPriorityArray.indexOf(b.priority);
+      if (aPriority > bPriority) {
+        return 1;
+      }
+
+      return (aPriority < bPriority) ? -1 : 0;
+    });
+  }
+
   @action
   getTasksByStatus(status: TaskStatus): Task[] {
     if (this.privates.tasksByStatus.get(status) === undefined) {
       const tasksByStatus = this.privates.allTasks.filter((task) => task.status === status);  
-      tasksByStatus.sort((a, b) => {
-        const aFullName = `${a.lastName} ${a.firstName}`;
-        const bFullName = `${b.lastName} ${b.firstName}`;
-  
-        // first sort by Last name
-        if (aFullName > bFullName) {
-          return 1;
-        }
-  
-        if (aFullName < bFullName) {
-          return -1;
-        }
-  
-        // if Last names are equal, sort by priority
-        const aPriority = taskPriorityArray.indexOf(a.priority);
-        const bPriority = taskPriorityArray.indexOf(b.priority);
-        if (aPriority > bPriority) {
-          return 1;
-        }
-  
-        return (aPriority < bPriority) ? -1 : 0;
-      });
+      this.sortTasks(tasksByStatus);
       this.privates.tasksByStatus.set(status, tasksByStatus);
     }
     const returnResult = this.privates.tasksByStatus.get(status);
@@ -110,5 +113,35 @@ export class TaskStore {
     return this.privates.allTasks.find((task) => {
       return task.id === this.privates.selectedId;
     }) ?? null;
+  }
+
+  @action
+  setStatus(id: number, status: TaskStatus): void {
+    const taskById = this.privates.allTasks.find((task) => task.id === id);
+    if (!taskById) {
+      throw new Error('Task not found');
+    }
+    const oldStatus = taskById.status;
+    taskById.status = status;
+
+    const oldStatusTasks = this.getTasksByStatus(oldStatus);
+    const taskToDeleteIndex = oldStatusTasks.findIndex((task) => task.id === id);
+    oldStatusTasks.splice(taskToDeleteIndex, 1);
+    this.privates.tasksByStatus.set(oldStatus, oldStatusTasks);
+
+    const newStatusTasks = this.getTasksByStatus(status);
+    newStatusTasks.push(taskById);
+    this.sortTasks(newStatusTasks);
+    this.privates.tasksByStatus.set(status, newStatusTasks);
+
+    this.writeTasksToLocalStorage();
+  }
+
+  writeTasksToLocalStorage(): void {
+    if (localStorage === undefined) {
+      return;
+    }
+    const tasksJson = JSON.stringify(this.privates.allTasks);
+    localStorage.setItem("tasks", tasksJson);
   }
 }

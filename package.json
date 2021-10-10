@@ -12,6 +12,8 @@
     "nanoid": "^3.1.29",
     "node-sass": "^4.14.1",
     "react": "^17.0.2",
+    "react-dnd": "^14.0.4",
+    "react-dnd-html5-backend": "^14.0.2",
     "react-dom": "^17.0.2",
     "react-scripts": "4.0.3",
     "typescript": "^4.4.3",

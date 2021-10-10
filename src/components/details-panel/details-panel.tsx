@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef } from 'react';
+import React, { useContext } from 'react';
 import { observer } from 'mobx-react';
 import { TaskContext } from '../task-board/task-board';
 import { DetailsPanelHeader } from './details-panel-header';

@@ -2,6 +2,8 @@ import React, { createContext, useEffect } from 'react';
 import { Columns } from '../columns/columns';
 import { DetailsPanel } from '../details-panel/details-panel';
 import { TaskStore } from '../../mobx-store/task-store';
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
 import '../../common.scss';
 import './task-board.scss';
 
@@ -18,11 +20,13 @@ export const TaskBoard = () => {
   }, []);
 
   return (
-    <TaskContext.Provider value={taskStore}>
-      <section className="task-board-wrapper">
-        <Columns />
-        <DetailsPanel />
-      </section>
-    </TaskContext.Provider>
+    <DndProvider backend={HTML5Backend}>
+      <TaskContext.Provider value={taskStore}>
+        <section className="task-board-wrapper">
+          <Columns />
+          <DetailsPanel />
+        </section>
+      </TaskContext.Provider>
+    </DndProvider>
   );
 };
