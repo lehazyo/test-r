@@ -1,13 +1,17 @@
 import { action, computed, observable } from 'mobx';
 import { Task, TaskStatus } from '../types/task';
 import { taskPriorityArray } from '../utils/task-priority';
-import jsonTasks from '../mocks/tasks.json';
 
-export interface TaskStoreParams {
+interface TaskStoreParams {
   allTasks: Task[];
   tasksLoading: boolean;
   selectedId: number | null;
   tasksByStatus: Map<TaskStatus, Task[]>;
+}
+
+interface TaskStoreOptions {
+  delayedLoad: boolean;
+  initialTasks: Task[] | null;
 }
 
 export class TaskStore {
@@ -17,8 +21,12 @@ export class TaskStore {
     selectedId: null,
     tasksByStatus: new Map(),
   } as TaskStoreParams);
+  private delayedLoad: boolean = false;
+  private initialTasks: Task[] | null = null;
 
-  constructor() {
+  constructor(options: TaskStoreOptions) {
+    this.delayedLoad = options.delayedLoad;
+    this.initialTasks = options.initialTasks;
     this.loadTasks();
   }
 
@@ -27,7 +35,7 @@ export class TaskStore {
       return false;
     }
     const tasksJson = localStorage.getItem("tasks");
-    if (tasksJson === null) {
+    if (tasksJson === null || tasksJson === undefined) {
       return false;
     }
     const parsedTasks = JSON.parse(tasksJson);
@@ -41,17 +49,23 @@ export class TaskStore {
     this.privates.tasksLoading = true;
 
     const localTasks = this.parseLocalStorageTasks();
+
+    if (localTasks) {
+      this.privates.allTasks = localTasks;
+    } else {
+      this.privates.allTasks = (this.initialTasks !== null) 
+        ? this.initialTasks
+        : [];
+    }
   
-    this.privates.allTasks = (!localTasks)
-      ? jsonTasks.map((task: any) => {
-        return task as Task;
-      })
-      : localTasks;
-  
-    // imitation of http request time gap
-    setTimeout(() => {
+    if (this.delayedLoad) {
+      // imitation of http request delay
+      setTimeout(() => {
+        this.privates.tasksLoading = false;
+      }, 500 + Math.random() * 2000);
+    } else {
       this.privates.tasksLoading = false;
-    }, 500 + Math.random() * 2000);
+    }
   }
 
   @action
