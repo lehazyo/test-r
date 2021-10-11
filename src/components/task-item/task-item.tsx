@@ -50,7 +50,8 @@ export const TaskItem: FC<Task> = observer(({
     taskCssClasses.push('task-wrapper--dragged');
   }
 
-  if (taskStore.isIdSelected(id)) {
+  const taskIsSelected = taskStore.isIdSelected(id);
+  if (taskIsSelected) {
     taskCssClasses.push('task-wrapper--selected');
   }
 
@@ -58,6 +59,7 @@ export const TaskItem: FC<Task> = observer(({
     <div ref={dragRef} className="task-wrapper-dragger">
       <div
         ref={taskItemRef}
+        aria-label={(taskIsSelected) ? `Details of TSK-${id} are open` : ""}
         className={taskCssClasses.join(" ")}
       >
         <header className="task-header">TSK-{id}</header>

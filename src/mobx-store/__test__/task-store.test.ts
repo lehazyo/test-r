@@ -1,7 +1,8 @@
-import { localStorageMock } from '../__test__/utils/local-storage-mock';
-import { TaskPriority, TaskStatus } from '../types/task';
-import '../__test__/utils/local-storage-mock';
-import { TaskStore } from './task-store';
+import { localStorageMock } from '../../__test__/utils/local-storage-mock';
+import { TaskPriority, TaskStatus } from '../../types/task';
+import { Task } from '../../types/task';
+import '../../__test__/utils/local-storage-mock';
+import { TaskStore } from '../task-store';
 import { cleanup } from '@testing-library/react';
 
 afterEach(() => {
@@ -110,7 +111,11 @@ describe("TaskStore tests", () => {
     // moving previously moved task back makes localStorage equal to the original array
     taskStore.setStatus(3, TaskStatus.TESTING);
 
-    expect(JSON.parse(localStorage.getItem("tasks"))).toStrictEqual(mockJsonTasks);
+    const itemsString = localStorage.getItem("tasks");
+    if (itemsString === null) {
+      throw new Error('Wrong content in localStorage')
+    }
+    expect(JSON.parse(itemsString)).toStrictEqual(mockJsonTasks);
   });
 });
 
@@ -184,7 +189,7 @@ const mockJsonTasks = [
     priority: TaskPriority.MUST,
     date: "2021-01-04"
   }
-];
+] as Task[];
 
 const sortedPlanTasks = [
   {
@@ -259,7 +264,7 @@ const sortedPlanTasks = [
     priority: TaskPriority.COULD,
     date: "2021-01-01",
   },
-];
+] as Task[];
 
 const unsortedPlanTasks = [
   {
@@ -334,4 +339,4 @@ const unsortedPlanTasks = [
     priority: TaskPriority.SHOULD,
     date: "2021-01-01",
   },
-];
+] as Task[];

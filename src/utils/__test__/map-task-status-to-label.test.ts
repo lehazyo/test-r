@@ -1,5 +1,5 @@
-import { TaskStatus } from "../types/task";
-import { mapTaskStatusToLabel } from "./map-task-status-to-label";
+import { TaskStatus } from "../../types/task";
+import { mapTaskStatusToLabel } from "../map-task-status-to-label";
 
 describe("mapTaskStatusToLabel function tests", () => {
   test.each([

@@ -46,7 +46,9 @@ export class TaskStore {
 
   @action
   loadTasks(): void {
-    this.privates.tasksLoading = true;
+    if (this.delayedLoad) {
+      this.privates.tasksLoading = true;
+    }
 
     const localTasks = this.parseLocalStorageTasks();
 
@@ -63,8 +65,6 @@ export class TaskStore {
       setTimeout(() => {
         this.privates.tasksLoading = false;
       }, 500 + Math.random() * 2000);
-    } else {
-      this.privates.tasksLoading = false;
     }
   }
 
