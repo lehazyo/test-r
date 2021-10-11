@@ -3,7 +3,7 @@ import { TaskStatus } from '../../types/task';
 import { TaskItem } from '../task-item/task-item';
 import { TaskContext } from '../task-board/task-board';
 import { TaskStore } from '../../mobx-store/task-store';
-import { mapTaskStatusToLabel } from '../../utils/task-status-name';
+import { mapTaskStatusToLabel } from '../../utils/map-task-status-to-label';
 import './column.scss';
 import { nanoid } from 'nanoid';
 import { observer } from 'mobx-react';
@@ -25,7 +25,7 @@ export const Column: FC<ColumnProps> = observer(({ status }) => {
   const taskStore: TaskStore = useContext(TaskContext);
 
   const taskListContent = (taskStore.isTasksLoading())
-    ? <div className="column-preloader" />
+    ? <div aria-label="Tasks are loading..." className="column-preloader" />
     : taskStore.getTasksByStatus(status).map((task) => <TaskItem key={nanoid()} {...task} />);
   
   return (

@@ -3,7 +3,7 @@ import { observer } from 'mobx-react';
 import { TaskContext } from '../task-board/task-board';
 import { DetailsPanelHeader } from './details-panel-header';
 import './details-panel.scss';
-import { mapTaskStatusToLabel } from '../../utils/task-status-name';
+import { mapTaskStatusToLabel } from '../../utils/map-task-status-to-label';
 
 export const DetailsPanel = observer(() => {
   const taskStore = useContext(TaskContext);
