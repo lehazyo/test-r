@@ -1,6 +1,6 @@
 # Тестовое задание по одной из вакансий
 
-[Выполненное задание на Github Pages](https://github.com/lehazyo/test-r/)
+[Выполненное задание на Github Pages](https://lehazyo.github.io/test-r/)
 
 Оригинальный текст задания:
 
